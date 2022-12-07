@@ -1,0 +1,65 @@
+
+import React, { useState, useContext } from 'react'
+import { Alert, View } from 'react-native'
+import { Text, TextInput, useTheme, Button } from 'react-native-paper'
+import Axios from 'axios'
+import NoteContext from "./context/noteContext"
+const SignUp = () => {
+    const theme = useTheme()
+    const [name, setName] = useState()
+    const [username, setUsername] = useState()
+    const [password, setPassword] = useState()
+    const handleSubmit = async () => {
+        await Axios.post("http://192.168.18.21:5000/signup", {
+            name: name,
+            email: username,
+            password: password,
+        }).then((response) => {
+            console.log(response)
+            alert("Signup successful")
+            // console.log(response.data.token)
+            // a.setToken(response.data.token)
+
+        });
+    }
+
+    return (
+        <View style={{
+            flex: 1, justifyContent: "center", alignItems
+                : "center"
+        }}>
+            <Text variant="displayLarge" style={{ color: theme.colors.primary }}>{"<Hulk>"}</Text>
+
+            <TextInput
+                mode="outlined"
+                label="Name"
+                placeholder="Name"
+                value={name}
+                onChangeText={setName}
+                style={{ minWidth: "80%", maxWidth: "80%", maxHeight: 60 }}
+            // right={<TextInput.Affix username="/100" />}
+            />
+            <TextInput
+                mode="outlined"
+                label="username"
+                placeholder="username"
+                value={username}
+                onChangeText={setUsername}
+                style={{ minWidth: "80%", maxWidth: "80%", maxHeight: 60 }}
+            // right={<TextInput.Affix username="/100" />}
+            />
+            <TextInput
+                mode="outlined"
+                label="password"
+                placeholder="password"
+                value={password}
+                style={{ minWidth: "80%", maxWidth: "80%", maxHeight: 60 }}
+                // right={<TextInput.Affix password="/100" />}
+                onChangeText={setPassword}
+            />
+            <Button backgroundColor={theme.colors.primary} marginTop={10} mode="contained" onPress={() => handleSubmit()}>SignIn</Button>
+        </View>
+    )
+}
+
+export default SignUp
