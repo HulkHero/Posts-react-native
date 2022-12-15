@@ -1,17 +1,17 @@
 import React, { useState, useContext } from 'react'
-import { Alert, View, StyleSheet } from 'react-native'
+import { View, StyleSheet } from 'react-native'
 import { Text, TextInput, useTheme, Button } from 'react-native-paper'
 import Axios from 'axios'
 import NoteContext from "./context/noteContext"
 import AsyncStorage from '@react-native-async-storage/async-storage'
-import { NavigationContainer } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
+
 
 const SignIn = ({ navigation }) => {
     const theme = useTheme()
     const [username, setUsername] = useState()
     const [password, setPassword] = useState()
     const [tbStyles, setStyles] = useState(false)
+    const [dum, setDum] = useState(true)
     // const [obj, setObj] = useState({
     //     token: null,
     //     id: null,
@@ -20,11 +20,12 @@ const SignIn = ({ navigation }) => {
 
     const a = useContext(NoteContext)
 
-    const AsyncStorageSave = async (token, id) => {
+    const AsyncStorageSave = async (token, id, name) => {
         try {
             const obj = {
                 token: token,
-                id: id
+                id: id,
+                creatername: name
             }
             await AsyncStorage.setItem("token", JSON.stringify(obj))
         }
@@ -34,7 +35,7 @@ const SignIn = ({ navigation }) => {
 
     const handleSubmit = async () => {
         console.log(password, "hello")
-        Axios.post("http://10.75.46.168:5000/login", {
+        Axios.post("https://nice-plum-panda-tam.cyclic.app/login", {
             email: username,
             password: password
 
@@ -42,15 +43,17 @@ const SignIn = ({ navigation }) => {
             // a.setToken(res.token)
             // a.setId(response.data.userId)
             console.log("hlo")
+            setDum(false)
             console.log(res.data.token)
             console.log(res.data.token, "sif")
             // setObj({
             //     token: res.data.token,
             //     id: res.data.userId
             // })
-            AsyncStorageSave(res.data.token, res.data.userId)
+            AsyncStorageSave(res.data.token, res.data.userId, res.data.name)
             a.setId(res.data.userId)
             a.setToken(res.data.token)
+            a.setcreatername(res.data.name)
 
 
 
@@ -59,8 +62,12 @@ const SignIn = ({ navigation }) => {
             console.log(obj.token, "si2f")
 
 
-        }).catch(() => {
-            alert("login failed")
+        }).catch((err) => {
+            if (dum === true) {
+                alert("login failed", err)
+
+            }
+
         })
     }
     return (
@@ -83,6 +90,7 @@ const SignIn = ({ navigation }) => {
                 mode="outlined"
                 label="password"
                 placeholder="password"
+                secureTextEntry={true}
                 value={password}
                 style={{ minWidth: "80%", maxWidth: "80%", maxHeight: 60 }}
                 // right={<TextInput.Affix password="/100" />}

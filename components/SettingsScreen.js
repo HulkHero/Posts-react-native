@@ -28,7 +28,7 @@ function SettingsScreen({ navigation }) {
             <Divider></Divider>
 
             {/* <Button mode="contained" onPress={() => { a.Signout() }}>SignOut</Button> */}
-            <TouchableRipple onPress={() => console.log("signout")}>
+            <TouchableRipple onPress={() => a.Signout()}>
                 <List.Item
                     title="Sign Out"
                     // description="Item description"

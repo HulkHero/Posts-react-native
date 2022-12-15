@@ -1,5 +1,4 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Button, Text, View, useColorScheme } from 'react-native';
+
 import React, { useContext, useState, useEffect } from 'react';
 import { NavigationContainer, DarkTheme, DefaultTheme } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
@@ -16,6 +15,10 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import NoteContext from './components/context/noteContext';
 import theme from './theme';
 import { darkTheme } from "./theme"
+import AddPosts from './components/AddPosts';
+import { StatusBar } from 'react-native';
+import ShowFriends from './components/FriendsScreen/ShowFriends';
+import FriendsScreen from './components/FriendsScreen/FriendsScreen';
 
 const HomeStack = createNativeStackNavigator();
 
@@ -30,9 +33,14 @@ function HomeStackScreen() {
     );
 }
 
+
+const AddPostStack = createNativeStackNavigator();
+function AddPostStackScreen() {
+    <AddPostStack.Navigator>
+        <AddPostStack.Screen name="AddPost" component={AddPosts} />
+    </AddPostStack.Navigator>
+}
 const SettingsStack = createNativeStackNavigator();
-
-
 function SettingsStackScreen() {
     return (
         <SettingsStack.Navigator>
@@ -54,8 +62,7 @@ function ProfileStackScreen() {
 
 const Tab = createBottomTabNavigator();
 export default function Main() {
-    const color = useColorScheme();
-    console.log(color, "color");
+
     const [isSigned, setIsSigned] = useState(false)
     const a = useContext(NoteContext)
     console.log("inside app")
@@ -70,6 +77,7 @@ export default function Main() {
                     setIsSigned(true)
                     a.setToken(obj.token)
                     a.setId(obj.id)
+                    a.setcreatername(obj.creatername)
 
                 }
                 else {
@@ -114,6 +122,7 @@ export default function Main() {
     return (
         <PaperProvider theme={a.mode === 'light' ? theme : darkTheme}>
             <NavigationContainer theme={a.mode === 'light' ? DefaultTheme : DarkTheme} >
+                <StatusBar animated={true} backgroundColor={a.mode === 'light' ? theme.colors.primary : DarkTheme.colors.background} ></StatusBar>
                 {isSigned ?
                     <Tab.Navigator
                         // screenOptions={{ headerShown: false }}
@@ -130,21 +139,34 @@ export default function Main() {
                                 else if (route.name === "Profile") {
                                     iconName = focused ? 'ios-person' : 'ios-person-outline';
                                 }
+                                else if (route.name === "AddPost") {
+                                    iconName = focused ? 'ios-add-circle' : 'ios-add';
+                                }
+                                else if (route.name === "Friends") {
+                                    iconName = focused ? 'person-add' : 'person-add-outline';
+                                }
 
                                 // You can return any component that you like here!
                                 return <Ionicons name={iconName} size={size} color={color} />;
                             },
                             tabBarActiveTintColor: theme.colors.primary,
                             tabBarInactiveTintColor: 'gray',
-                            headerShown: false
+                            headerShown: false,
+                            // tabBarStyle: { position: 'absolute' },
+                            // tabBarBackground: () => (
+                            //     <BlurView tint="light" intensity={100} style={StyleSheet.absoluteFill} />
+                            // ),
+
                         })}
                         initialRouteName="Posts"
+                        tabBarHideOnKeyboard={true}
                     >
 
                         <Tab.Screen name="Posts" component={HomeStackScreen} />
                         <Tab.Screen name="Profile" component={ProfileStackScreen} />
+                        <Tab.Screen name="AddPost" component={AddPosts} />
+                        <Tab.Screen name="Friends" component={FriendsScreen} />
                         <Tab.Screen name="Settings" component={SettingsStackScreen} />
-
                     </Tab.Navigator>
                     : <LoginStack.Navigator initialRouteName='SignIn'>
 

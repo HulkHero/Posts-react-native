@@ -1,10 +1,11 @@
 import React, { useContext, useEffect, useState } from 'react'
-import { View, FlatList, Image } from 'react-native'
+import { View, Image } from 'react-native'
 import NoteContext from './context/noteContext'
 import Axios from "axios";
 import { decode as atob, encode as btoa } from 'base-64';
-import ProfileCard from './ProfileCard';
-import { TextInput } from 'react-native-paper';
+
+import { ActivityIndicator, TextInput } from 'react-native-paper';
+
 const ImgStatus = () => {
     const a = useContext(NoteContext)
     const [data, setData] = useState([]);
@@ -12,7 +13,7 @@ const ImgStatus = () => {
     const [previewUrl, setPreviewUrl] = useState(null);
     const [dumy, setDumy] = useState(false)
     useEffect(() => {
-        Axios.get(`http://192.168.18.21:5000/getProfile/${a.id}`).then((response) => {
+        Axios.get(`https://nice-plum-panda-tam.cyclic.app/getProfile/${a.id}`).then((response) => {
             setData(response.data);
             console.log("got proile", response.data);
             setDumy(true)
@@ -55,19 +56,24 @@ const ImgStatus = () => {
     return (
 
         <View>
-            {data &&
+            {data ?
+
                 <View style={{}}>
-                    <Image
-                        style={{ marginVertical: 10, marginRight: "auto", marginLeft: "auto", maxHeight: 200, minHeight: 200, maxWidth: 200, minWidth: 200, borderRadius: 30, boxShadow: "1px 1px 5px 5px #cde8cc", objectFit: "cover" }}
-                        alt="hello"
-                        // src={previewUrl}
-                        source={{
-                            uri: previewUrl
-                        }}
-                    />
+                    {previewUrl ?
+                        <Image
+                            style={{ marginVertical: 10, marginRight: "auto", marginLeft: "auto", maxHeight: 200, minHeight: 200, maxWidth: 200, minWidth: 200, borderRadius: 30, boxShadow: "1px 1px 5px 5px #cde8cc", objectFit: "cover" }}
+                            alt="hello"
+                            // src={previewUrl}
+                            source={{
+                                uri: previewUrl
+                            }}
+                        />
+                        : <ActivityIndicator></ActivityIndicator>
+                    }
                     <TextInput style={{ minWidth: "100%", maxWidth: "100%", marginRight: "auto", marginLeft: "auto", }} value={defaultText} onChangeText={setDefaultText}></TextInput>
 
-                </View>
+                </View> : <ActivityIndicator></ActivityIndicator>
+
             }
         </View>
 

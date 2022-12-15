@@ -1,26 +1,39 @@
 
-import React, { useState, useContext } from 'react'
-import { Alert, View } from 'react-native'
+import React, { useState, } from 'react'
+import { View } from 'react-native'
 import { Text, TextInput, useTheme, Button } from 'react-native-paper'
 import Axios from 'axios'
-import NoteContext from "./context/noteContext"
+
+import { useValidation } from 'react-native-form-validator'
 const SignUp = () => {
     const theme = useTheme()
-    const [name, setName] = useState()
-    const [username, setUsername] = useState()
-    const [password, setPassword] = useState()
-    const handleSubmit = async () => {
-        await Axios.post("http://192.168.18.21:5000/signup", {
-            name: name,
-            email: username,
-            password: password,
-        }).then((response) => {
-            console.log(response)
-            alert("Signup successful")
-            // console.log(response.data.token)
-            // a.setToken(response.data.token)
-
+    const [name, setName] = useState("")
+    const [username, setUsername] = useState("")
+    const [password, setPassword] = useState("")
+    const { validate, getErrorMessages, isFormValid } =
+        useValidation({
+            state: { name, username, password },
         });
+    const handleSubmit = async () => {
+        validate({
+            name: { minlength: 3, maxlength: 20, required: true },
+            username: { email: true, required: true },
+            password: { password: true, minlength: 6 }
+        })
+        if (isFormValid() === true) {
+            console.log("form valid")
+            await Axios.post("https://nice-plum-panda-tam.cyclic.app/signup", {
+                name: name,
+                email: username,
+                password: password,
+            }).then((response) => {
+                console.log(response)
+                alert("Signup successful")
+                // console.log(response.data.token)
+                // a.setToken(response.data.token)
+
+            });
+        }
     }
 
     return (
@@ -58,6 +71,7 @@ const SignUp = () => {
                 onChangeText={setPassword}
             />
             <Button backgroundColor={theme.colors.primary} marginTop={10} mode="contained" onPress={() => handleSubmit()}>SignIn</Button>
+            <Text style={{ paddingLeft: 4, color: theme.colors.error }}>{getErrorMessages()}</Text>
         </View>
     )
 }
