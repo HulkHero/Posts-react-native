@@ -1,10 +1,10 @@
 import React, { useState, useEffect, useContext } from 'react'
-import { useTheme, List, IconButton, ActivityIndicator } from 'react-native-paper';
+import { List, IconButton } from 'react-native-paper';
 import NoteContext from '../context/noteContext';
 import { View, FlatList } from 'react-native';
-import FriendsShowCard from './FriendsShowCard';
+// import FriendsShowCard from './FriendsShowCard';
 import Axios from "axios"
-import { decode as atob, encode as btoa } from 'base-64'
+// import { decode as atob, encode as btoa } from 'base-64'
 
 const ReceivedFriends = () => {
     const a = useContext(NoteContext);
@@ -31,6 +31,7 @@ const ReceivedFriends = () => {
             console.log("hello");
             setaccepted(!accepted)
             props.toggleRendr();
+            alert("Accepted")
             // setData(Data && Data.map((item) => {
             //     return item._id != targetId;
             // }))
@@ -61,7 +62,7 @@ const ReceivedFriends = () => {
                     <FlatList
                         data={Data}
                         renderItem={renderItem}
-                    ></FlatList> : <ActivityIndicator></ActivityIndicator>
+                    ></FlatList> : <List.Item title="loading"></List.Item>
 
                 }
             </List.Accordion>

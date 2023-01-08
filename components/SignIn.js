@@ -11,6 +11,7 @@ const SignIn = ({ navigation }) => {
     const [username, setUsername] = useState()
     const [password, setPassword] = useState()
     const [tbStyles, setStyles] = useState(false)
+    const [loader, setLoader] = useState(false)
     const [dum, setDum] = useState(true)
     // const [obj, setObj] = useState({
     //     token: null,
@@ -35,6 +36,7 @@ const SignIn = ({ navigation }) => {
 
     const handleSubmit = async () => {
         console.log(password, "hello")
+        setLoader(true)
         Axios.post("https://nice-plum-panda-tam.cyclic.app/login", {
             email: username,
             password: password
@@ -57,7 +59,7 @@ const SignIn = ({ navigation }) => {
 
 
 
-
+            setLoader(false)
             a.Signin(token)
             console.log(obj.token, "si2f")
 
@@ -65,7 +67,7 @@ const SignIn = ({ navigation }) => {
         }).catch((err) => {
             if (dum === true) {
                 alert("login failed", err)
-
+                setLoader(false)
             }
 
         })
@@ -97,7 +99,7 @@ const SignIn = ({ navigation }) => {
                 onChangeText={setPassword}
             />
             <Text color={theme.colors.primary} style={[tbStyles ? styles.textButtonLine : styles.textButton, { color: theme.colors.primary }]} onPress={() => { setStyles(true); navigation.navigate('SignUp') }}>New User ? SignUp</Text>
-            <Button backgroundColor={theme.colors.primary} marginTop={10} mode="contained" onPress={() => handleSubmit()}>SignIn</Button>
+            <Button backgroundColor={theme.colors.primary} loading={loader} disabled={loader} marginTop={10} mode="contained" onPress={() => handleSubmit()}>SignIn</Button>
         </View>
     )
 }

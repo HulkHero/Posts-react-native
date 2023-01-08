@@ -1,7 +1,7 @@
-import React,{useState,useEffect,useContext} from 'react'
-import { Avatar, List,Card, useTheme,Divider } from 'react-native-paper';
-import NoteContext from '../context/noteContext';
-import { View,FlatList } from 'react-native';
+import React from 'react'
+import { Avatar, List,Divider } from 'react-native-paper';
+// import NoteContext from '../context/noteContext';
+import { View} from 'react-native';
 
 
 

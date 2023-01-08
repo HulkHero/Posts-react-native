@@ -8,6 +8,7 @@ import { useValidation } from 'react-native-form-validator'
 const SignUp = () => {
     const theme = useTheme()
     const [name, setName] = useState("")
+    const [loader, setLoader] = useState(false)
     const [username, setUsername] = useState("")
     const [password, setPassword] = useState("")
     const { validate, getErrorMessages, isFormValid } =
@@ -15,6 +16,7 @@ const SignUp = () => {
             state: { name, username, password },
         });
     const handleSubmit = async () => {
+        setLoader(true)
         validate({
             name: { minlength: 3, maxlength: 20, required: true },
             username: { email: true, required: true },
@@ -28,11 +30,14 @@ const SignUp = () => {
                 password: password,
             }).then((response) => {
                 console.log(response)
-                alert("Signup successful")
+                alert("Signup successful,Login Now")
                 // console.log(response.data.token)
                 // a.setToken(response.data.token)
-
-            });
+                setLoader(false)
+            }).catch(err => setLoader(false));
+        }
+        else {
+            setLoader(false)
         }
     }
 
@@ -70,7 +75,7 @@ const SignUp = () => {
                 // right={<TextInput.Affix password="/100" />}
                 onChangeText={setPassword}
             />
-            <Button backgroundColor={theme.colors.primary} marginTop={10} mode="contained" onPress={() => handleSubmit()}>SignIn</Button>
+            <Button backgroundColor={theme.colors.primary} loading={loader} disabled={loader} marginTop={10} mode="contained" onPress={() => handleSubmit()}>SignIn</Button>
             <Text style={{ paddingLeft: 4, color: theme.colors.error }}>{getErrorMessages()}</Text>
         </View>
     )

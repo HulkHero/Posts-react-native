@@ -10,7 +10,7 @@ const fontConfig = {
 };
 const theme = {
     ...DefaultTheme,
-
+    roundness: 4,
     "colors": {
         "primary": "rgb(0, 94, 178)",
         "onPrimary": "rgb(255, 255, 255)",
@@ -71,6 +71,7 @@ export default theme
 
 export const darkTheme = {
     ...DarkDefaultTheme,
+    roundness: 4,
     "colors": {
         "primary": "rgb(167, 200, 255)",
         "onPrimary": "rgb(0, 48, 97)",

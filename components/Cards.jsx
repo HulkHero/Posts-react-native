@@ -1,6 +1,6 @@
 import React,{useState,useEffect,useContext} from 'react'
-import { Avatar, Button, Card, Title, Paragraph ,useTheme, IconButton,Text} from 'react-native-paper';
-import { Image, TouchableHighlight, TouchableWithoutFeedback } from 'react-native';
+import { Avatar, Card, Title, Paragraph ,useTheme, Text} from 'react-native-paper';
+import { Image,  TouchableWithoutFeedback,View } from 'react-native';
 import NoteContext from './context/noteContext';
 import { AntDesign } from '@expo/vector-icons';
 const LeftContent = props => <Avatar.Icon {...props} icon="account"  />
@@ -28,7 +28,9 @@ const Cards = (props) => {
   }, [])
 
   return (
-    <Card mode="elevated"  elevation={2} style={{ marginTop:10 }}>
+    // <View style={{display:"flex",alignItems:"center"}}>
+    <View style={{marginLeft:"auto",marginRight:"auto"}}>
+    <Card mode="elevated"  elevation={2} style={{minWidth:"97%", maxWidth:"97%", marginTop:10 }}>
     <Card.Title title={props.name} titleStyle={{lineHeight:24,paddingTop:6}} subtitleStyle={{paddingBottom:6}} subtitle={result} left={LeftContent} />
     <Card.Content>
       <Title >{props.heading}</Title>
@@ -55,6 +57,7 @@ const Cards = (props) => {
       <Text>{props.displayLikes? props.displayLikes :props.likes.length}</Text>
     </Card.Actions>
   </Card>
+  </View>
   )
 }
 

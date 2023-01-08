@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react'
-import { Avatar, List, Card, useTheme, Divider, Searchbar, IconButton } from 'react-native-paper';
+import { Avatar, List, Card, useTheme, Divider, Searchbar, IconButton, Button } from 'react-native-paper';
 import NoteContext from '../context/noteContext';
 import { View, FlatList } from 'react-native';
 import Axios from 'axios';
@@ -50,11 +50,16 @@ const AddFriends = () => {
     return (
         <View>
             <Searchbar
+                style={{ position: "relative" }}
                 placeholder="Search User"
                 onChangeText={onChangeSearch}
+                keyboardType="default"
                 value={searchQuery}
+                returnKeyType='search'
+                onKeyPress={() => handleSubmit()}
                 onIconPress={() => handleSubmit()}
             />
+            {/* <Button elevation={3} mode="contained" style={{ borderRadius: 0, height: "100%", marginLeft: "70%", marginRight: "auto", position: "absolute" }}>Search</Button> */}
             {/* <List.Accordion
                 title="Received Requests"
                 expanded={expanded}

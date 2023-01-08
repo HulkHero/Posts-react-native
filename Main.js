@@ -19,6 +19,7 @@ import AddPosts from './components/AddPosts';
 import { StatusBar } from 'react-native';
 import ShowFriends from './components/FriendsScreen/ShowFriends';
 import FriendsScreen from './components/FriendsScreen/FriendsScreen';
+import CameraScreen from './components/Camera.js/CameraScreen';
 
 const HomeStack = createNativeStackNavigator();
 
@@ -38,6 +39,7 @@ const AddPostStack = createNativeStackNavigator();
 function AddPostStackScreen() {
     <AddPostStack.Navigator>
         <AddPostStack.Screen name="AddPost" component={AddPosts} />
+
     </AddPostStack.Navigator>
 }
 const SettingsStack = createNativeStackNavigator();
@@ -46,6 +48,7 @@ function SettingsStackScreen() {
         <SettingsStack.Navigator>
             <SettingsStack.Screen name="Settings" component={SettingsScreen} />
             <SettingsStack.Screen name="Details" component={DetailsScreen} />
+
         </SettingsStack.Navigator>
     );
 }
@@ -55,7 +58,7 @@ function ProfileStackScreen() {
     return (
         <ProfileStack.Navigator>
             <ProfileStack.Screen name="My Profile" component={MyProfile} />
-
+            <ProfileStack.Screen name="Camera" component={CameraScreen} />
         </ProfileStack.Navigator>
     )
 }
@@ -169,7 +172,6 @@ export default function Main() {
                         <Tab.Screen name="Settings" component={SettingsStackScreen} />
                     </Tab.Navigator>
                     : <LoginStack.Navigator initialRouteName='SignIn'>
-
                         <LoginStack.Screen name="SignIn" options={{ headerShown: false }} component={SignIn} />
                         <LoginStack.Screen name="SignUp" component={SignUp} />
                     </LoginStack.Navigator>

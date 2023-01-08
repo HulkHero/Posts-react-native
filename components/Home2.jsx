@@ -2,10 +2,16 @@ import React from 'react'
 import { useState ,useEffect,useContext} from 'react'
 import Cards from './Cards';
 import Axios from "axios";
-import { View ,FlatList,RefreshControl} from 'react-native';
+import { View ,FlatList,RefreshControl,Image,Dimensions,ScrollView} from 'react-native';
 import {decode as atob, encode as btoa} from 'base-64'
-import { useTheme ,ActivityIndicator,Text} from 'react-native-paper';
+import { useTheme ,ActivityIndicator,Text, Card} from 'react-native-paper';
 import NoteContext from './context/noteContext';
+// import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
+import SkeletonLoader from "expo-skeleton-loader";
+
+// const { width, height } = Dimensions.get("window");
+
+
 const Home2 = () => {
      const theme=useTheme()
      const a= useContext(NoteContext)
@@ -110,13 +116,13 @@ const Home2 = () => {
       )};
        
        
-
+  
 
 
      
   return (
     <View >
-    {data && <FlatList
+    {data.length>0 ? <FlatList
             // style={{backgroundColor:theme.colors.background}}
             //  renderScrollComponent={props => <InfiniteScrollView {...props} />}
             data={data}
@@ -134,7 +140,51 @@ const Home2 = () => {
             //onRefresh={fetchMoreData2} 
             ListFooterComponent={(props) =>hasMore?<ActivityIndicator style={{marginTop:5}} {...props}></ActivityIndicator>:<Text style={{color:theme.colors.primary,marginTop:5,marginLeft:"auto",marginRight:"auto"}} {...props}>End</Text>}
             refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={fetchMoreData2} />}
-            ></FlatList>
+            ></FlatList>:
+            <View>
+              <Card style={{maxWidth:"97%",minWidth:"97%",marginLeft:"auto",marginRight:"auto",marginTop:10,minHeight:"50%",maxHeight:"50%",borderRadius:10}}>
+               <SkeletonLoader highlightColor={theme.colors.outline} boneColor={theme.colors.onSurfaceVariant} duration={1000} style={{minHeight:"22%"}}  >
+                 <SkeletonLoader.Container style={{flex:1,flexDirection:"row"}} >
+            
+                  <SkeletonLoader.Item style={{minheight:70,maxHeight:70,maxWidth:70,borderRadius:60,marginLeft:10,marginTop:5}}></SkeletonLoader.Item>
+                  
+                  
+                  <SkeletonLoader.Item style={{maxHeight:25,minHeight:25,maxWidth:170 ,borderRadius:10,marginTop:20,marginLeft:10}}></SkeletonLoader.Item>
+        
+                  
+                 </SkeletonLoader.Container>
+               </SkeletonLoader>
+
+            <SkeletonLoader highlightColor={theme.colors.outline} boneColor={theme.colors.onSurfaceVariant} duration={1500} style={{marginVertical:10,maxHeight:"70%"}}>
+              
+            {/* <AvatarLayout ></AvatarLayout> */}
+            <SkeletonLoader.Container  ></SkeletonLoader.Container>
+            </SkeletonLoader>
+            
+            </Card>
+
+
+            <Card style={{maxWidth:"97%",minWidth:"97%",marginLeft:"auto",marginRight:"auto",marginTop:10,minHeight:"50%",maxHeight:"50%",borderRadius:10}}>
+               <SkeletonLoader highlightColor={theme.colors.outline} boneColor={theme.colors.onSurfaceVariant} duration={1000} style={{minHeight:"22%"}}  >
+                 <SkeletonLoader.Container style={{flex:1,flexDirection:"row"}} >
+            
+                  <SkeletonLoader.Item style={{minheight:70,maxHeight:70,maxWidth:70,borderRadius:60,marginLeft:10,marginTop:5}}></SkeletonLoader.Item>
+                  
+                  
+                  <SkeletonLoader.Item style={{maxHeight:25,minHeight:25,maxWidth:170 ,borderRadius:10,marginTop:20,marginLeft:10}}></SkeletonLoader.Item>
+        
+                  
+                 </SkeletonLoader.Container>
+               </SkeletonLoader>
+
+            <SkeletonLoader highlightColor={theme.colors.outline} boneColor={theme.colors.onSurfaceVariant} duration={1000} style={{marginVertical:10,maxHeight:"70%"}}>
+              
+          
+            <SkeletonLoader.Container  ></SkeletonLoader.Container>
+            </SkeletonLoader>
+            
+            </Card>
+            </View>
     }
     </View>
 
