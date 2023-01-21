@@ -11,7 +11,11 @@ const fontConfig = {
 const theme = {
     ...DefaultTheme,
     roundness: 4,
+    "skeletonbackground": "rgb(204, 204, 204)",
+    "skeletonhighlight": "rgb(140, 140, 140)",
     "colors": {
+        "skeletonbackground": "rgb(204, 204, 204)",
+        "skeletonhighlight": "rgb(140, 140, 140)",
         "primary": "rgb(0, 94, 178)",
         "onPrimary": "rgb(255, 255, 255)",
         "primaryContainer": "rgb(213, 227, 255)",
@@ -72,7 +76,12 @@ export default theme
 export const darkTheme = {
     ...DarkDefaultTheme,
     roundness: 4,
+    "skeletonbackground": "rgb(204, 204, 204)",
+    "skeletonhighlight": "rgb(140, 140, 140)",
     "colors": {
+        "skeletonbackground": "rgb(204, 204, 204)",
+        "skeletonhighlight": "rgb(140, 140, 140)",
+
         "primary": "rgb(167, 200, 255)",
         "onPrimary": "rgb(0, 48, 97)",
         "primaryContainer": "rgb(0, 71, 136)",

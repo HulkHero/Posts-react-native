@@ -17,8 +17,8 @@ const ShowFriends = (props) => {
     useEffect(() => {
       if(a.id){
     Axios.get(`https://nice-plum-panda-tam.cyclic.app/showFriends/${a.id}`).then((res) => {
-     console.log(res.data.user.friends,"hellllll");
-     console.log(res.data.img)
+    //  console.log(res.data.user.friends,"hellllll");
+    //  console.log(res.data.img)
       setAvatar(res.data.img)
     //   console.log(res.data.img,"her")
      setData(res.data.user.friends);
@@ -27,9 +27,9 @@ const ShowFriends = (props) => {
     }, [a.id,props.rendr])
 
     const renderItem = ({ item ,index}) => {
-        console.log(index)
+        // console.log(index)
         let img12= avatar[index]
-        console.log(img12,"img12")
+        // console.log(img12,"img12")
           const base64= btoa(new Uint8Array(img12.avatar.data.data).reduce(function (data, byte) {
             return data + String.fromCharCode(byte);
         }, ''));

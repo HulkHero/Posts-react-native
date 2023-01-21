@@ -8,7 +8,8 @@ import SettingsScreen from './components/SettingsScreen';
 import MyProfile from './components/MyProfile';
 import Home2 from './components/Home2';
 import { Ionicons } from '@expo/vector-icons';
-import { Provider as PaperProvider } from 'react-native-paper';
+import { View, Text, Pressable, TouchableOpacity } from 'react-native'
+import { Provider as PaperProvider, TouchableRipple } from 'react-native-paper';
 import SignIn from './components/SignIn';
 import SignUp from './components/SignUp';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -20,12 +21,32 @@ import { StatusBar } from 'react-native';
 import ShowFriends from './components/FriendsScreen/ShowFriends';
 import FriendsScreen from './components/FriendsScreen/FriendsScreen';
 import CameraScreen from './components/Camera.js/CameraScreen';
+import AddPostTabBar from './components/TabBar/AddPostTabBar';
+// import Animated, { useAnimatiedStyle, withTiming } from 'react-native-reanimated';
+import Animated, { Keyframe, SlideInDown, SlideInUp, withRepeat, useAnimatedStyle, useSharedValue, withTiming, withSequence, withDelay, Easing } from 'react-native-reanimated';
+
+
+
 
 const HomeStack = createNativeStackNavigator();
 
 function HomeStackScreen() {
     return (
-        <HomeStack.Navigator>
+        <HomeStack.Navigator screenOptions={{
+            headerTitle: "Posts",
+            // headerTransparent: true,
+            // headerStyle: {
+            //     backgroundColor: theme.colors.primary
+            // }
+
+            headerStyle: {
+                position: "absolute",
+                padding: "100",
+                top: -50,
+                // backgroundColor: theme.colors.primary,
+            }
+
+        }}>
 
             <HomeStack.Screen name="Posts" component={Home2} />
             <HomeStack.Screen name="Details" component={DetailsScreen} />
@@ -64,7 +85,7 @@ function ProfileStackScreen() {
 }
 
 const Tab = createBottomTabNavigator();
-export default function Main() {
+export default function Main({ navigation }) {
 
     const [isSigned, setIsSigned] = useState(false)
     const a = useContext(NoteContext)
@@ -106,6 +127,29 @@ export default function Main() {
 
     })
 
+    // const rotation = useSharedValue(0);
+    // // const animatedStyles = useAnimatedStyle(() => {
+    // //     return {
+    // //         transform: [
+    // //             {
+    // //                 rotateZ: `${rotation.value}deg`,
+    // //             },
+    // //         ],
+    // //     };
+    // // }, [rotation.value]);
+    const rotation = useSharedValue(0);
+
+    const animatedStyles = useAnimatedStyle(() => ({
+
+        transform: [
+            {
+                translateY: withTiming(40)
+            },
+        ],
+
+    }))
+
+
     // if (!a.token) {
     //   try {
     //     const getvalue = AsyncStorage.getItem("token")
@@ -127,50 +171,116 @@ export default function Main() {
             <NavigationContainer theme={a.mode === 'light' ? DefaultTheme : DarkTheme} >
                 <StatusBar animated={true} backgroundColor={a.mode === 'light' ? theme.colors.primary : DarkTheme.colors.background} ></StatusBar>
                 {isSigned ?
+
                     <Tab.Navigator
+
                         // screenOptions={{ headerShown: false }}
                         screenOptions={({ route }) => ({
-                            tabBarIcon: ({ focused, color, size }) => {
-                                let iconName;
-                                if (route.name === 'Posts') {
-                                    iconName = focused
-                                        ? 'home-sharp'
-                                        : 'home-outline';
-                                } else if (route.name === 'Settings') {
-                                    iconName = focused ? 'settings' : 'settings-outline';
-                                }
-                                else if (route.name === "Profile") {
-                                    iconName = focused ? 'ios-person' : 'ios-person-outline';
-                                }
-                                else if (route.name === "AddPost") {
-                                    iconName = focused ? 'ios-add-circle' : 'ios-add';
-                                }
-                                else if (route.name === "Friends") {
-                                    iconName = focused ? 'person-add' : 'person-add-outline';
-                                }
 
-                                // You can return any component that you like here!
-                                return <Ionicons name={iconName} size={size} color={color} />;
-                            },
+
+                            tabBarButton: (props) => <TouchableRipple  {...props} />,
+                            tabBarStyle: [{ transform: [{ rotate: "0deg" }] }, animatedStyles],
+                            // tabBarIcon: ({ focused, color, size }) => {
+                            //     let iconName;
+                            //     if (route.name === 'Posts') {
+                            //         iconName = focused
+                            //             ? 'home-sharp'
+                            //             : 'home-outline';
+                            //     } else if (route.name === 'Settings') {
+                            //         iconName = focused ? 'settings' : 'settings-outline';
+                            //     }
+                            //     else if (route.name === "Profile") {
+                            //         iconName = focused ? 'ios-person' : 'ios-person-outline';
+                            //     }
+                            //     else if (route.name === "AddPost") {
+                            //         iconName = focused ? "ios-add-circle" : 'ios-add-circle';
+                            //         focused ? color = theme.colors.primary : theme.colors.primary;
+                            //         size = 48;
+
+
+                            //     }
+                            //     else if (route.name === "Friends") {
+                            //         iconName = focused ? 'person-add' : 'person-add-outline';
+                            //     }
+
+                            //     // You can return any component that you like here!
+                            //     return <Ionicons name={iconName} size={size} color={color} />;
+                            // },
                             tabBarActiveTintColor: theme.colors.primary,
                             tabBarInactiveTintColor: 'gray',
                             headerShown: false,
-                            // tabBarStyle: { position: 'absolute' },
-                            // tabBarBackground: () => (
-                            //     <BlurView tint="light" intensity={100} style={StyleSheet.absoluteFill} />
-                            // ),
+                            // // tabBarStyle: { position: 'absolute' },
+                            // // tabBarBackground: () => (
+                            // //     <BlurView tint="light" intensity={100} style={StyleSheet.absoluteFill} />
+                            // // ),
 
                         })}
                         initialRouteName="Posts"
                         tabBarHideOnKeyboard={true}
                     >
 
-                        <Tab.Screen name="Posts" component={HomeStackScreen} />
-                        <Tab.Screen name="Profile" component={ProfileStackScreen} />
-                        <Tab.Screen name="AddPost" component={AddPosts} />
-                        <Tab.Screen name="Friends" component={FriendsScreen} />
-                        <Tab.Screen name="Settings" component={SettingsStackScreen} />
+                        <Tab.Screen name="Posts" options={{
+                            tabBarIcon: ({ focused }) => (<View>
+                                {
+                                    focused ? <Ionicons name="home-sharp" size={24} color={theme.colors.primary} /> : <Ionicons name="home-outline" size={24} color="gray" />
+                                }
+
+                            </View>)
+                            ,
+
+                        }} component={HomeStackScreen} />
+                        <Tab.Screen name="Profile" options={{
+                            tabBarIcon: ({ focused }) => (<View>
+                                {
+                                    focused ? <Ionicons name="ios-person" size={24} color={theme.colors.primary} /> : <Ionicons name="ios-person-outline" size={24} color="gray" />
+                                }
+
+                            </View>)
+
+
+                        }} component={ProfileStackScreen} />
+                        <Tab.Screen name="AddPost" options={{
+                            tabBarLabel: () => null,
+                            tabBarButton: (props) => <Pressable  {...props} />,
+                            tabBarIcon: ({ focused }) => (<View style={{
+                                borderRadius: 25,
+                                bottom: 26,
+                                margin: 0,
+                                padding: 0,
+                                // borderColor: theme.colors.primary, borderWidth: 4, borderStyle: "solid"
+                            }}>
+                                {
+                                    focused ? <AddPostTabBar focused={focused}></AddPostTabBar> : <Ionicons style={{
+
+                                        //  outlineColor: theme.colors.primary, outlineStyle: "solid", outlineWidth: 5, borderColor: "#fcfdfb",
+                                        // borderWidth: 2, borderColor: "#fcfdfb",
+                                        // borderWidth: 2,
+                                    }} name="ios-add-circle" size={50} color="gray" />
+                                }
+
+                            </View>)
+                        }} component={AddPosts} />
+                        <Tab.Screen name="Friends" options={{
+                            // tabBarLabelStyle: { color: theme.colors.error },
+                            // tabBarButton: ({ focused }) => (<Pressable onPress={() => navigation.navigate("Friends")} style={{ width: 50, height: 50 }}></Pressable>),
+                            // tabBarButton: (props) => <TouchableOpacity {...props} />,
+                            tabBarIcon: ({ focused }) => (<View >
+                                {
+                                    focused ? <Ionicons name="person-add" size={24} color={theme.colors.primary} /> : <Ionicons name="person-add-outline" size={24} color="gray" />
+                                }
+
+                            </View>)
+                        }} component={FriendsScreen} />
+                        <Tab.Screen name="Settings" options={{
+                            tabBarIcon: ({ focused }) => (<View onPress={() => console.log("pressed")}>
+                                {
+                                    focused ? <Ionicons name="settings" size={24} color={theme.colors.primary} /> : <Ionicons name="settings-outline" size={24} color="gray" />
+                                }
+
+                            </View>)
+                        }} component={SettingsStackScreen} />
                     </Tab.Navigator>
+
                     : <LoginStack.Navigator initialRouteName='SignIn'>
                         <LoginStack.Screen name="SignIn" options={{ headerShown: false }} component={SignIn} />
                         <LoginStack.Screen name="SignUp" component={SignUp} />

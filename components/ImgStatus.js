@@ -25,9 +25,9 @@ const ImgStatus = ({ route }) => {
         AsyncStorage.removeItem("photo")
         Axios.get(`https://nice-plum-panda-tam.cyclic.app/getProfile/${a.id}`).then((response) => {
             setData(response.data);
-            console.log("got proile", response.data);
+            // console.log("got proile", response.data);
             setDumy(true)
-            console.log(data)
+            // console.log(data)
         }).catch(err => {
             console.log(err)
         })
@@ -36,7 +36,7 @@ const ImgStatus = ({ route }) => {
     if (dumy == true) {
         console.log("jjk")
         setDefaultText(data[0].Status)
-        console.log(data[0], "status")
+        // console.log(data[0], "status")
         const base64 = btoa(new Uint8Array(data[0].avatar.data.data).reduce(function (data, byte) {
             return data + String.fromCharCode(byte);
         }, ''));
@@ -106,7 +106,7 @@ const ImgStatus = ({ route }) => {
             // formData.append("image",image);
             formData.append('avatar', { uri: localUri, name: filename, type });
             Axios.post("https://nice-plum-panda-tam.cyclic.app/avatar", formData, { headers: { 'content-type': 'multipart/form-data' } }).then((response) => {
-                console.log(response)
+
                 setImageStorage(null)
                 setLoader(false)
                 // setOpenSnack(true)
@@ -119,8 +119,8 @@ const ImgStatus = ({ route }) => {
             // formData.append("image",image);
             formData.append('avatar', { uri: imageServer, name: "photo", type: "png" });
             Axios.post("https://nice-plum-panda-tam.cyclic.app/avatar", formData, { headers: { 'content-type': 'multipart/form-data' } }).then((response) => {
-                console.log(response)
-                console.log("updated without image")
+                // console.log(response)
+                // console.log("updated without image")
                 setLoader(false)
                 // setImageStorage(null)
                 // setOpenSnack(true)
@@ -175,7 +175,7 @@ const ImgStatus = ({ route }) => {
                             {imageStorage ? <IconButton iconColor={theme.colors.error} style={{ boxShadow: "2px 2px 5px 3px green", backgroundColor: "rgb(51, 102, 255,0.5)", position: "absolute", bottom: 0, right: 50, color: theme.colors.error }} mode="contained" icon="close" title="discard" onPress={() => discardImage()}></IconButton> : null}
                         </View>
                         : <View>
-                            <SkeletonLoader >
+                            <SkeletonLoader highlightColor={theme.colors.skeletonhighlight} boneColor={theme.colors.skeletonbackground}>
                                 <SkeletonLoader.Container style={{ marginVertical: 10, marginRight: "auto", marginLeft: "auto", maxHeight: 200, minHeight: 200, maxWidth: 200, minWidth: 200, borderRadius: 30, boxShadow: "1px 1px 5px 5px #cde8cc", objectFit: "cover" }} ></SkeletonLoader.Container>
                             </SkeletonLoader>
                         </View>

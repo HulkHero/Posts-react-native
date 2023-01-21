@@ -1,6 +1,6 @@
 import React, { useState, useContext } from 'react'
 import { View, StyleSheet } from 'react-native'
-import { Text, TextInput, useTheme, Button } from 'react-native-paper'
+import { Text, TextInput, useTheme, Button, TouchableRipple } from 'react-native-paper'
 import Axios from 'axios'
 import NoteContext from "./context/noteContext"
 import AsyncStorage from '@react-native-async-storage/async-storage'
@@ -72,6 +72,45 @@ const SignIn = ({ navigation }) => {
 
         })
     }
+
+    const handleSubmit2 = async () => {
+        console.log(password, "hello")
+        setLoader(true)
+        Axios.post("https://nice-plum-panda-tam.cyclic.app/login", {
+            email: "hammad",
+            password: "hammad"
+
+        }).then(res => {
+            // a.setToken(res.token)
+            // a.setId(response.data.userId)
+            console.log("hlo")
+            setDum(false)
+            console.log(res.data.token)
+            console.log(res.data.token, "sif")
+            // setObj({
+            //     token: res.data.token,
+            //     id: res.data.userId
+            // })
+            AsyncStorageSave(res.data.token, res.data.userId, res.data.name)
+            a.setId(res.data.userId)
+            a.setToken(res.data.token)
+            a.setcreatername(res.data.name)
+
+
+
+            setLoader(false)
+            a.Signin(token)
+            console.log(obj.token, "si2f")
+
+
+        }).catch((err) => {
+            if (dum === true) {
+                alert("login failed", err)
+                setLoader(false)
+            }
+
+        })
+    }
     return (
         <View style={{
             flex: 1, justifyContent: "center", alignItems
@@ -100,6 +139,17 @@ const SignIn = ({ navigation }) => {
             />
             <Text color={theme.colors.primary} style={[tbStyles ? styles.textButtonLine : styles.textButton, { color: theme.colors.primary }]} onPress={() => { setStyles(true); navigation.navigate('SignUp') }}>New User ? SignUp</Text>
             <Button backgroundColor={theme.colors.primary} loading={loader} disabled={loader} marginTop={10} mode="contained" onPress={() => handleSubmit()}>SignIn</Button>
+            <TouchableRipple disabled={loader} onPress={() => handleSubmit2()} style={{ elevation: 5, margin: 20, marginBottom: 7, borderRadius: 6, alignSelf: "center", backgroundColor: theme.colors.error, minWidth: "50%", }} rippleColor="rgba(0, 0, 0, .32)">
+                <>
+                    <Text color={theme.colors.surface} variant="bodyLarge" style={{ margin: 10, marginBottom: 0, color: theme.colors.surface, textAlign: "center" }} > Login as </Text>
+                    <Text color={theme.colors.surface} variant="bodyLarge" style={{ margin: 10, marginTop: 0, color: theme.colors.surface, textAlign: "center" }}>Hammad</Text>
+                </>
+
+
+            </TouchableRipple>
+            <Text color={theme.colors.primary} style={[{ marginTop: 0, alignSelf: "center", textAlign: "center" }, { color: theme.colors.onSurface }]}>Recommended(skips SignUp process) for testing</Text>
+
+            {/* <Button style={{ alignSelf: "center", minWidth: "100%", minHeight: 60 }} children={<Text>Hello</Text>} backgroundColor={theme.colors.error} color={theme.colors.error} mode="contained" loading={loader} disabled={loader} onPress={() => handleSubmit2()}>  </Button> */}
         </View>
     )
 }

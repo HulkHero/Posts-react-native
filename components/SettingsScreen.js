@@ -1,8 +1,9 @@
 import React, { useState, useContext, useEffect } from 'react';
-import { Text, View } from 'react-native';
-import { Button, Divider, List, Switch, TouchableRipple, } from 'react-native-paper';
+import { SafeAreaView, View } from 'react-native';
+import { Button, Divider, Text, List, Switch, TouchableRipple, } from 'react-native-paper';
 import NoteContext from './context/noteContext';
 import { Ionicons } from '@expo/vector-icons';
+import Animated, { Keyframe, SlideInDown, SlideInUp, withRepeat, useAnimatedStyle, withTiming, withSequence, withDelay, Easing } from 'react-native-reanimated';
 // import { mdiLogout } from '@mdi/js';
 function SettingsScreen({ navigation }) {
     const a = useContext(NoteContext)
@@ -17,8 +18,36 @@ function SettingsScreen({ navigation }) {
             setDarkMode(true)
         }
     }
+
+    const ViewAnimated = useAnimatedStyle(() => ({
+        transform: [
+            {
+                translateY: withRepeat(withSequence(withTiming(-150, { duration: 0 }), withDelay(300, withTiming(350, { duration: 3000 })), withTiming(-150, { duration: 1000, easing: Easing.out })), -1),
+
+            }
+        ]
+    }))
+
+    const animatedStyle = useAnimatedStyle(() => ({
+        transform: [
+            {
+                translateX: withRepeat(withSequence(withTiming(-160, { duration: 0 }), withDelay(100, withTiming(350, { duration: 3000 })), withTiming(-160, { duration: 1000, easing: Easing.inOut })), -1),
+            }
+        ]
+
+    }))
+    const keyframe = new Keyframe({
+        0: {
+            transform: [{ rotate: '0deg' }],
+        },
+        100: {
+            transform: [{ rotate: '90deg' }],
+        },
+    })
+
     return (
-        <View style={{ flex: 1 }}>
+
+        <View style={{ flex: 1, }}>
             {/* <Text>Settings screen</Text> */}
             <List.Item
                 // mode="contained"
@@ -38,14 +67,24 @@ function SettingsScreen({ navigation }) {
             <Divider></Divider>
             <TouchableRipple onPress={() => { handleMode() }}>
                 <List.Item
-                    title="Mode"
+                    title="Dark Mode"
                     // description="Item description"
                     right={props => <Switch value={darkMode} style={{ maxHeight: 15, marginTop: "auto", marginBottom: "auto" }} onValueChange={() => handleMode()} />}
                 />
             </TouchableRipple>
             <Divider></Divider>
+            {/* <Animated.View style={ViewAnimated}> */}
+
+
+            <Animated.View style={animatedStyle}>
+                <Text
+                // style={[{ letterSpacing: 0.8 }, animatedStyle]}
+                >Hulk Smash</Text>
+            </Animated.View>
+            {/* </Animated.View> */}
 
         </View>
+
     );
 }
 

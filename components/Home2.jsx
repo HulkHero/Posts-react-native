@@ -35,7 +35,7 @@ const Home2 = () => {
         if (a.id){
           Axios.put(`https://nice-plum-panda-tam.cyclic.app/likePost/${id}/${a.id}`).then((response) => {
            
-            console.log("response:dislike", response)
+            // console.log("response:dislike", response)
             setLik(response.data.likes.length);
             console.log(lik)
         
@@ -122,6 +122,7 @@ const Home2 = () => {
      
   return (
     <View >
+      
     {data.length>0 ? <FlatList
             // style={{backgroundColor:theme.colors.background}}
             //  renderScrollComponent={props => <InfiniteScrollView {...props} />}
@@ -142,20 +143,20 @@ const Home2 = () => {
             refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={fetchMoreData2} />}
             ></FlatList>:
             <View>
-              <Card style={{maxWidth:"97%",minWidth:"97%",marginLeft:"auto",marginRight:"auto",marginTop:10,minHeight:"50%",maxHeight:"50%",borderRadius:10}}>
-               <SkeletonLoader highlightColor={theme.colors.outline} boneColor={theme.colors.onSurfaceVariant} duration={1000} style={{minHeight:"22%"}}  >
+              <Card style={{maxWidth:"97%",minWidth:"97%",marginLeft:"auto",marginRight:"auto",marginTop:10,minHeight:"40%",maxHeight:"50%",borderRadius:10}}>
+               <SkeletonLoader highlightColor={theme.colors.skeletonhighlight} boneColor={theme.colors.skeletonbackground} duration={1000} style={{minHeight:"22%"}}  >
                  <SkeletonLoader.Container style={{flex:1,flexDirection:"row"}} >
-            
-                  <SkeletonLoader.Item style={{minheight:70,maxHeight:70,maxWidth:70,borderRadius:60,marginLeft:10,marginTop:5}}></SkeletonLoader.Item>
+             
+                  <SkeletonLoader.Item style={{minheight:60,maxHeight:60,maxWidth:60,borderRadius:60,marginLeft:10,marginTop:7}}></SkeletonLoader.Item>
                   
                   
-                  <SkeletonLoader.Item style={{maxHeight:25,minHeight:25,maxWidth:170 ,borderRadius:10,marginTop:20,marginLeft:10}}></SkeletonLoader.Item>
+                  <SkeletonLoader.Item style={{maxHeight:20,minHeight:20,maxWidth:170 ,borderRadius:10,marginTop:25,marginLeft:10}}></SkeletonLoader.Item>
         
                   
                  </SkeletonLoader.Container>
                </SkeletonLoader>
 
-            <SkeletonLoader highlightColor={theme.colors.outline} boneColor={theme.colors.onSurfaceVariant} duration={1500} style={{marginVertical:10,maxHeight:"70%"}}>
+            <SkeletonLoader highlightColor={theme.colors.skeletonhighlight} boneColor={theme.colors.skeletonbackground} duration={1000} style={{marginVertical:10,maxHeight:"70%"}}>
               
             {/* <AvatarLayout ></AvatarLayout> */}
             <SkeletonLoader.Container  ></SkeletonLoader.Container>
@@ -164,20 +165,20 @@ const Home2 = () => {
             </Card>
 
 
-            <Card style={{maxWidth:"97%",minWidth:"97%",marginLeft:"auto",marginRight:"auto",marginTop:10,minHeight:"50%",maxHeight:"50%",borderRadius:10}}>
-               <SkeletonLoader highlightColor={theme.colors.outline} boneColor={theme.colors.onSurfaceVariant} duration={1000} style={{minHeight:"22%"}}  >
+            <Card style={{maxWidth:"97%",minWidth:"97%",marginLeft:"auto",marginRight:"auto",marginTop:10,minHeight:"40%",maxHeight:"50%",borderRadius:10}}>
+               <SkeletonLoader highlightColor={theme.colors.skeletonhighlight} boneColor={theme.colors.skeletonbackground} duration={1000} style={{minHeight:"22%"}}  >
                  <SkeletonLoader.Container style={{flex:1,flexDirection:"row"}} >
             
-                  <SkeletonLoader.Item style={{minheight:70,maxHeight:70,maxWidth:70,borderRadius:60,marginLeft:10,marginTop:5}}></SkeletonLoader.Item>
+                  <SkeletonLoader.Item style={{minheight:60,maxHeight:60,maxWidth:60,borderRadius:60,marginLeft:10,marginTop:7}}></SkeletonLoader.Item>
                   
                   
-                  <SkeletonLoader.Item style={{maxHeight:25,minHeight:25,maxWidth:170 ,borderRadius:10,marginTop:20,marginLeft:10}}></SkeletonLoader.Item>
+                  <SkeletonLoader.Item style={{maxHeight:20,minHeight:20,maxWidth:170 ,borderRadius:10,marginTop:25,marginLeft:10}}></SkeletonLoader.Item>
         
                   
                  </SkeletonLoader.Container>
                </SkeletonLoader>
 
-            <SkeletonLoader highlightColor={theme.colors.outline} boneColor={theme.colors.onSurfaceVariant} duration={1000} style={{marginVertical:10,maxHeight:"70%"}}>
+            <SkeletonLoader highlightColor={theme.colors.skeletonhighlight} boneColor={theme.colors.skeletonbackground} duration={1000} style={{marginVertical:10,maxHeight:"70%"}}>
               
           
             <SkeletonLoader.Container  ></SkeletonLoader.Container>
