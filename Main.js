@@ -293,3 +293,4 @@ export default function Main({ navigation }) {
     );
 }
 
+//eas build -p android --profile preview

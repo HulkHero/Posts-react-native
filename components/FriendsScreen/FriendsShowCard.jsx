@@ -10,7 +10,7 @@ const FriendsShowCard = (props) => {
   return (
     <View>
       
-        <List.Item title={props.name}  left={(props)=><Avatar.Image {...props} source={{uri:image}} ></Avatar.Image>}/>
+        <List.Item title={props.name} description={props.status} left={(props)=><Avatar.Image {...props} source={{uri:image}} ></Avatar.Image>}/>
         
         <Divider></Divider>
     </View>

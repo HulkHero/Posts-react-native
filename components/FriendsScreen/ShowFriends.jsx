@@ -9,28 +9,28 @@ import {decode as atob, encode as btoa} from 'base-64'
 const ShowFriends = (props) => {
     const a = useContext(NoteContext)
     const [data, setData] = useState([]);
-    const [avatar, setAvatar] = useState();
+    // const [avatar, setAvatar] = useState();
     const [expanded, setExpanded] = React.useState(true);
 
     const handlePress = () => setExpanded(!expanded);
   
     useEffect(() => {
       if(a.id){
-    Axios.get(`https://nice-plum-panda-tam.cyclic.app/showFriends/${a.id}`).then((res) => {
+    Axios.get(`https://nice-plum-panda-tam.cyclic.app/myFriends/${a.id}`).then((res) => {
     //  console.log(res.data.user.friends,"hellllll");
     //  console.log(res.data.img)
-      setAvatar(res.data.img)
+      // setAvatar(res.data.img)
     //   console.log(res.data.img,"her")
-     setData(res.data.user.friends);
+     setData(res.data);
     }) } 
     
     }, [a.id,props.rendr])
 
     const renderItem = ({ item ,index}) => {
         // console.log(index)
-        let img12= avatar[index]
+        // let img12= avatar[index]
         // console.log(img12,"img12")
-          const base64= btoa(new Uint8Array(img12.avatar.data.data).reduce(function (data, byte) {
+          const base64= btoa(new Uint8Array(item.avatar.data.data).reduce(function (data, byte) {
             return data + String.fromCharCode(byte);
         }, ''));
         // const base64= btoa(new Uint8Array(item.image.data.data).reduce(function (data, byte) {
@@ -39,7 +39,7 @@ const ShowFriends = (props) => {
         const img=`data:image/png;base64,${base64}`
         
         return (
-        <FriendsShowCard key={item._id}  userId={a.id} name={item.name}  image={img}  />
+        <FriendsShowCard key={item._id}  userId={a.id} name={item.createrId.name} status={item.Status} image={img}  />
       )};
   return (
     <View>
@@ -51,7 +51,7 @@ const ShowFriends = (props) => {
         // left={props => <List.Icon {...props} icon="folder" />}
         >
        
-        { avatar &&
+        { data &&
           <FlatList
           data={data}
           renderItem={renderItem}          
