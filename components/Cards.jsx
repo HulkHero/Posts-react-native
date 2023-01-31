@@ -1,4 +1,4 @@
-import React,{useState,useEffect,useContext} from 'react'
+import React,{useState,useEffect,useContext,memo} from 'react'
 import { Avatar, Card, Title, Paragraph ,useTheme, Text} from 'react-native-paper';
 import { Image,  TouchableWithoutFeedback,View,Button,Touchable, Pressable } from 'react-native';
 import NoteContext from './context/noteContext';
@@ -48,11 +48,17 @@ const Cards = (props) => {
         // }
         {
         // scale: withTiming(offset.value,{duration:5000})
-        scale: withSpring(offset.value,{mass:30,stiffness:300})
-    }]
+        //scale: withSpring(offset.value,{mass:30,stiffness:300})
+         scale:withSequence(withTiming(offset.value,{duration:500}),withTiming(1,{duration:500}) )
+      }
+  ]
   }
 
 }, [like])
+
+const onAnimation = () => {
+  offset.value = withSpring(1.5,{mass:30,stiffness:300})
+}
 
 
   return (
@@ -68,9 +74,15 @@ const Cards = (props) => {
     <Card.Actions onPress={()=>{console.log("card presse")}}>
       {/* <Button>Cancel</Button>
       <Button>Ok</Button> */}
-      <AnimatedTouchable style={animatedStyle} onPress={()=>{ offset.value===1.5?offset.value=1:offset.value=1.5 ; if(like==true){props.ondislike(props.id);setnum(props.likes.length--);
+      <AnimatedTouchable style={animatedStyle} onPress={()=>{ 
+        onAnimation();
+        //offset.value===1.5?offset.value=1:offset.value=1.5 ;
+       if(like==true){
+        //offset.value=1;
+        props.ondislike(props.id);setnum(props.likes.length--);
         setLike(false)
        }else{
+         // offset.value=1.5;
           props.onlike(props.id);
           setLike(true)
           setnum(props.likes.length++)
@@ -89,4 +101,4 @@ const Cards = (props) => {
   )
 }
 
-export default Cards
+export default  memo(Cards)
