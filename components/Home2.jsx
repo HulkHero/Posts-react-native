@@ -111,8 +111,14 @@ const Home2 = () => {
         }, ''));
        
         const img=`data:image/png;base64,${base64}`
+        const base641= btoa(new Uint8Array(item.creater.profile.avatar.data.data).reduce(function (data, byte) {
+          return data + String.fromCharCode(byte);
+      }, ''));
+     
+      const imgAvatar=`data:image/png;base64,${base641}`
+      
         return (
-        <Cards key={item._id} ondislike={ondislike} userId={a.id} likes={item.likes} id={item._id} name={item.creatername} date={item.date} image={img}  heading={item.heading} caption={item.caption} onlike={onlike} displayLike={lik}/>
+        <Cards key={item._id} imgAvatar={imgAvatar} ondislike={ondislike} userId={a.id} likes={item.likes} id={item._id} name={item.creatername} date={item.date} image={img}  heading={item.heading} caption={item.caption} onlike={onlike} displayLike={lik}/>
       )};
        
        

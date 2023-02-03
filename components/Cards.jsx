@@ -4,8 +4,9 @@ import { Image,  TouchableWithoutFeedback,View,Button,Touchable, Pressable } fro
 import NoteContext from './context/noteContext';
 import Animated,{useAnimatedStyle,useSharedValue,withDelay,withRepeat,withSequence,withTiming,Easing, withSpring} from "react-native-reanimated"
 import { AntDesign } from '@expo/vector-icons';
-const LeftContent = props => <Avatar.Icon {...props} icon="account"  />
+
 const Cards = (props) => {
+
   const theme=useTheme()
   const a= useContext(NoteContext)
   const [like, setLike] = useState(false)
@@ -59,13 +60,11 @@ const Cards = (props) => {
 const onAnimation = () => {
   offset.value = withSpring(1.5,{mass:30,stiffness:300})
 }
-
-
   return (
     // <View style={{display:"flex",alignItems:"center"}}>
     <Animated.View style={[{marginLeft:"auto",marginRight:"auto"}]}>
     <Card mode="elevated"  elevation={2} style={{minWidth:"97%", maxWidth:"97%", marginTop:10 }}>
-    <Card.Title title={props.name} titleStyle={{lineHeight:24,paddingTop:6}} subtitleStyle={{paddingBottom:6}} subtitle={result} left={LeftContent} />
+    <Card.Title title={props.name} titleStyle={{lineHeight:24,paddingTop:6}} subtitleStyle={{paddingBottom:6}} subtitle={result} left={(pops)=>{ return(<Avatar.Image {...pops} size={46} source={{uri:props.imgAvatar}}/>)}} />
     <Card.Content>
       <Title >{props.heading}</Title>
       <Paragraph >{props.caption}</Paragraph>
