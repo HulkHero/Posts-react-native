@@ -106,11 +106,18 @@ const Home2 = () => {
        }
 
        const renderItem = ({ item }) => {
-        const base64= btoa(new Uint8Array(item.image.data.data).reduce(function (data, byte) {
-            return data + String.fromCharCode(byte);
-        }, ''));
-       
-        const img=`data:image/png;base64,${base64}`
+        let base64 = null;
+        let img = null;
+        if (item.image.data) {
+            base64 = btoa(
+                new Uint8Array(item.image.data.data).reduce(function (data, byte) {
+                    return data + String.fromCharCode(byte);
+                }, '')
+            );
+            img = `data:image/png;base64,${base64}`;
+        } else {
+            console.log('no image');
+        }
         const base641= btoa(new Uint8Array(item.creater.profile.avatar.data.data).reduce(function (data, byte) {
           return data + String.fromCharCode(byte);
       }, ''));

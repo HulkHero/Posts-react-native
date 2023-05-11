@@ -32,12 +32,6 @@ const Cards = (props) => {
   const AnimatedTouchable=Animated.createAnimatedComponent(Pressable)
   const Animatedicon=Animated.createAnimatedComponent(AntDesign)
   const offset = useSharedValue(1);
-
-  // const animatedStyles = useAnimatedStyle(() => {
-  //   return {
-  //     transform: [{ translateX: offset.value * 255 }],
-  //   };
-  // });
   const animatedStyle = useAnimatedStyle(() => {
     return {
       transform: [
@@ -69,7 +63,8 @@ const onAnimation = () => {
       <Title >{props.heading}</Title>
       <Paragraph >{props.caption}</Paragraph>
     </Card.Content>
-    <Image style={{maxHeight: 200, minHeight: 200,resizeMode:"cover"}} source={{ uri: props.image }} />
+    {props.image? <Image style={{maxHeight: 200, minHeight: 200,resizeMode:"cover"}} source={{ uri: props.image }} />
+      : null}
     <Card.Actions onPress={()=>{console.log("card presse")}}>
       {/* <Button>Cancel</Button>
       <Button>Ok</Button> */}

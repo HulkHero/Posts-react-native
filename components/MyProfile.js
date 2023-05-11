@@ -68,11 +68,18 @@ const MyProfile = () => {
     }
 
     const renderItem = ({ item }) => {
-        const base64 = btoa(new Uint8Array(item.image.data.data).reduce(function (data, byte) {
-            return data + String.fromCharCode(byte);
-        }, ''));
-
-        const img = `data:image/png;base64,${base64}`
+        let base64 = null;
+        let img = null;
+        if (item.image.data) {
+            base64 = btoa(
+                new Uint8Array(item.image.data.data).reduce(function (data, byte) {
+                    return data + String.fromCharCode(byte);
+                }, '')
+            );
+            img = `data:image/png;base64,${base64}`;
+        } else {
+            console.log('no image');
+        }
         return (
             <Cards key={item._id} ondislike={ondislike} userId={a.id} likes={item.likes} id={item._id} name={item.creatername} date={item.date} image={img} heading={item.heading} caption={item.caption} onlike={onlike} displayLike={lik} />
         )
