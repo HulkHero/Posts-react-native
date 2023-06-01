@@ -22,6 +22,7 @@ import ShowFriends from './components/FriendsScreen/ShowFriends';
 import FriendsScreen from './components/FriendsScreen/FriendsScreen';
 import CameraScreen from './components/Camera.js/CameraScreen';
 import AddPostTabBar from './components/TabBar/AddPostTabBar';
+import { decode as atob, encode as btoa } from 'base-64';
 // import Animated, { useAnimatiedStyle, withTiming } from 'react-native-reanimated';
 import Animated, { Keyframe, SlideInDown, SlideInUp, withRepeat, useAnimatedStyle, useSharedValue, withTiming, withSequence, withDelay, Easing } from 'react-native-reanimated';
 
@@ -38,7 +39,7 @@ function HomeStackScreen() {
             // headerStyle: {
             //     backgroundColor: theme.colors.primary
             // }
-
+            headerShown: false,
             headerStyle: {
                 position: "absolute",
                 padding: "100",
@@ -93,47 +94,67 @@ export default function Main({ navigation }) {
     console.log("inside app")
     const getStorageData = async () => {
         try {
-            await AsyncStorage.getItem("token").then(obje => {
-                var obj = JSON.parse(obje)
-                console.log(obj, "objMain")
-                // console.log(a.token, "a")
-                if (obj) {
-                    // console.log("inside obj if", obj.token)
-                    setIsSigned(true)
-                    a.setToken(obj.token)
-                    a.setId(obj.id)
-                    a.setcreatername(obj.creatername)
+            const [obj, avat] = await AsyncStorage.multiGet(["token", "avatar"])
+            console.log(obj[1], "objMainVaulues")
+            const object = JSON.parse(obj[1]);
+            console.log(object, "object")
+            const ava = JSON.parse(avat[1]);
+            if (object) {
+                setIsSigned(true)
+                a.setToken(object.token)
+                a.setId(object.id)
+                a.setcreatername(object.creatername)
+                a.setIsSigned(true)
+                const base64 = btoa(
+                    new Uint8Array(ava.data.data).reduce(function (data, byte) {
+                        return data + String.fromCharCode(byte);
+                    }, '')
+                );
+                const img = `data:image/png;base64,${base64}`;
+                a.setAvatar(img)
+                console.log("avatar set")
+            }
+            else {
+                setIsSigned(false)
+                console.log("no token")
+            }
+            // await AsyncStorage.getItem("token").then(obje => {
+            //     var obj = JSON.parse(obje)
+            //     console.log(obj, "objMain");
+            //     if (obj) {
+            //         setIsSigned(true)
+            //         a.setToken(obj.token)
+            //         a.setId(obj.id)
+            //         a.setcreatername(obj.creatername)
 
-                }
-                else {
-                    setIsSigned(false)
-                }
-            })
-            // a.setToken(getvalue.token)
-            // a.setId(getvalue.id)
+            //     }
+            //     else {
+            //         setIsSigned(false)
+            //     }
+            // })
 
-            // setIsSigned(true)
         }
+
         catch (err) {
             console.log(err, "error storage")
 
         }
     }
+    // getStorageData();
     useEffect(() => {
-        getStorageData();
+        console.log("inside useeffect")
+
         if (a.token) {
             setIsSigned(true)
         }
-
-
-
-
+        else {
+            getStorageData();
+        }
 
     })
+
     useEffect(() => {
         getNetInfo();
-
-
     }, [])
 
     const getNetInfo = () => {
@@ -142,14 +163,9 @@ export default function Main({ navigation }) {
             if (state.isConnected == false) {
                 console.log("Please check your internet connection")
                 setIsNetwork(false)
-
             }
-
         })
     }
-
-
-
     const ToggleNetwork = () => {
         Network1.getNetworkStateAsync().then(state => {
             if (state.isConnected == true) {
@@ -161,16 +177,6 @@ export default function Main({ navigation }) {
         })
 
     }
-    // const rotation = useSharedValue(0);
-    // // const animatedStyles = useAnimatedStyle(() => {
-    // //     return {
-    // //         transform: [
-    // //             {
-    // //                 rotateZ: `${rotation.value}deg`,
-    // //             },
-    // //         ],
-    // //     };
-    // // }, [rotation.value]);
     const rotation = useSharedValue(0);
 
     const animatedStyles = useAnimatedStyle(() => ({
@@ -182,32 +188,12 @@ export default function Main({ navigation }) {
         ],
 
     }))
-
-
-    // if (!a.token) {
-    //   try {
-    //     const getvalue = AsyncStorage.getItem("token")
-    //     console.log()
-    //     a.setToken(getvalue.token)
-    //     a.setId(getvalue.id)
-
-    //     setIsSigned(true)
-    //   }
-    //   catch (err) {
-    //     console.log(err, "error storage")
-    //     setIsSigned(false)
-    //   }
-
-    // }
-
     return (
         <PaperProvider theme={a.mode === 'light' ? theme : darkTheme}>
             <NavigationContainer theme={a.mode === 'light' ? DefaultTheme : DarkTheme} >
                 {isNetwork ? <>
                     <StatusBar animated={true} backgroundColor={a.mode === 'light' ? theme.colors.primary : DarkTheme.colors.background} ></StatusBar>
-
                     {isSigned ?
-
                         <Tab.Navigator
 
                             // screenOptions={{ headerShown: false }}
@@ -260,7 +246,6 @@ export default function Main({ navigation }) {
                                     {
                                         focused ? <Ionicons name="home-sharp" size={24} color={theme.colors.primary} /> : <Ionicons name="home-outline" size={24} color="gray" />
                                     }
-
                                 </View>)
                                 ,
 
@@ -270,10 +255,7 @@ export default function Main({ navigation }) {
                                     {
                                         focused ? <Ionicons name="ios-person" size={24} color={theme.colors.primary} /> : <Ionicons name="ios-person-outline" size={24} color="gray" />
                                     }
-
                                 </View>)
-
-
                             }} component={ProfileStackScreen} />
                             <Tab.Screen name="AddPost" options={{
                                 tabBarLabel: () => null,

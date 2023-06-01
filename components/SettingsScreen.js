@@ -1,13 +1,19 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { SafeAreaView, View } from 'react-native';
-import { Button, Divider, Text, List, Switch, TouchableRipple, } from 'react-native-paper';
+import { Button, Divider, Text, List, Switch, TouchableRipple, Modal, Portal, ActivityIndicator } from 'react-native-paper';
 import NoteContext from './context/noteContext';
 import { Ionicons } from '@expo/vector-icons';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import Animated, { Keyframe, SlideInDown, SlideInUp, withRepeat, useAnimatedStyle, withTiming, withSequence, withDelay, Easing } from 'react-native-reanimated';
 // import { mdiLogout } from '@mdi/js';
 function SettingsScreen({ navigation }) {
     const a = useContext(NoteContext)
     const [darkMode, setDarkMode] = useState(false)
+    const [visible, setVisible] = React.useState(false);
+
+    const showModal = () => setVisible(true);
+    const hideModal = () => setVisible(false);
+    const containerStyle = { backgroundColor: 'white', padding: 20, display: "flex", alignItems: "center", justifyContent: "center", borderRadius: 10, maxWidth: "75%", minWidth: "75%", minHeight: "20%", maxHeight: "20%", alignSelf: "center" };
     const handleMode = () => {
         if (a.mode == "dark") {
             a.setMode("light")
@@ -18,7 +24,6 @@ function SettingsScreen({ navigation }) {
             setDarkMode(true)
         }
     }
-
     const ViewAnimated = useAnimatedStyle(() => ({
         transform: [
             {
@@ -57,7 +62,7 @@ function SettingsScreen({ navigation }) {
             <Divider></Divider>
 
             {/* <Button mode="contained" onPress={() => { a.Signout() }}>SignOut</Button> */}
-            <TouchableRipple onPress={() => a.Signout()}>
+            <TouchableRipple onPress={() => { showModal(); a.Signout(); hideModal() }}>
                 <List.Item
                     title="Sign Out"
                     // description="Item description"
@@ -82,6 +87,16 @@ function SettingsScreen({ navigation }) {
                 >Hulk Smash</Text>
             </Animated.View>
             {/* </Animated.View> */}
+
+            <Portal>
+                <Modal visible={visible} dismissable={false} onDismiss={hideModal} contentContainerStyle={containerStyle}>
+                    <View style={{ flex: 1, justifyContent: "center", alignItems: "center", minHeight: "15%", maxWidth: "100%", }}>
+                        <ActivityIndicator animating={true} size="large" />
+                        <Text>Signing Out...</Text>
+                    </View>
+                </Modal>
+            </Portal>
+
 
         </View>
 

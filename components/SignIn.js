@@ -1,12 +1,14 @@
-import React, { useState, useContext } from 'react'
+import React, { useState, useContext, useEffect } from 'react'
 import { View, StyleSheet } from 'react-native'
 import { Text, TextInput, useTheme, Button, TouchableRipple } from 'react-native-paper'
 import Axios from 'axios'
 import NoteContext from "./context/noteContext"
 import AsyncStorage from '@react-native-async-storage/async-storage'
+import { useNavigation } from '@react-navigation/native'
+import { set } from 'react-native-reanimated'
 
-
-const SignIn = ({ navigation }) => {
+const SignIn = () => {
+    const navigation = useNavigation();
     const theme = useTheme()
     const [username, setUsername] = useState()
     const [password, setPassword] = useState()
@@ -21,16 +23,25 @@ const SignIn = ({ navigation }) => {
 
     const a = useContext(NoteContext)
 
-    const AsyncStorageSave = async (token, id, name) => {
+    const AsyncStorageSave = async (token, id, name, img) => {
         try {
             const obj = {
                 token: token,
                 id: id,
-                creatername: name
+                creatername: name,
+
             }
-            await AsyncStorage.setItem("token", JSON.stringify(obj))
+            await AsyncStorage.multiSet([["token", JSON.stringify(obj)], ["avatar", JSON.stringify(img)]], () => {
+                console.log("token saved")
+                a.setIsSigned(true)
+                setLoader(false)
+
+            })
+
+
+
         }
-        catch (err) { console.log("cant save") }
+        catch (err) { console.log(err, "cant save") }
 
     }
 
@@ -42,35 +53,17 @@ const SignIn = ({ navigation }) => {
             password: password
 
         }).then(res => {
-            // a.setToken(res.token)
-            // a.setId(response.data.userId)
-            console.log("hlo")
-            setDum(false)
             console.log(res.data.token)
+            AsyncStorageSave(res.data.token, res.data.userId, res.data.name, res.data.avatar)
+
             console.log(res.data.token, "sif")
-            // setObj({
-            //     token: res.data.token,
-            //     id: res.data.userId
-            // })
-            AsyncStorageSave(res.data.token, res.data.userId, res.data.name)
-            a.setId(res.data.userId)
-            a.setToken(res.data.token)
-            a.setcreatername(res.data.name)
-
-
-
-            setLoader(false)
-            a.Signin(token)
-            console.log(obj.token, "si2f")
-
-
-        }).catch((err) => {
-            if (dum === true) {
-                alert("login failed", err)
-                setLoader(false)
-            }
 
         })
+            .catch(err => {
+
+                console.log(err)
+                alert("Login Failed")
+            })
     }
 
     const handleSubmit2 = async () => {
@@ -83,34 +76,18 @@ const SignIn = ({ navigation }) => {
         }).then(res => {
             // a.setToken(res.token)
             // a.setId(response.data.userId)
-            console.log("hlo")
-            setDum(false)
-            console.log(res.data.token)
+
             console.log(res.data.token, "sif")
-            // setObj({
-            //     token: res.data.token,
-            //     id: res.data.userId
-            // })
-            AsyncStorageSave(res.data.token, res.data.userId, res.data.name)
-            a.setId(res.data.userId)
-            a.setToken(res.data.token)
-            a.setcreatername(res.data.name)
+            AsyncStorageSave(res.data.token, res.data.userId, res.data.name, res.data.avatar)
 
+        }).catch(err => {
 
-
-            setLoader(false)
-            a.Signin(token)
-            console.log(obj.token, "si2f")
-
-
-        }).catch((err) => {
-            if (dum === true) {
-                alert("login failed", err)
-                setLoader(false)
-            }
-
+            console.log(err)
+            alert("Login Failed")
         })
+
     }
+
     return (
         <View style={{
             flex: 1, justifyContent: "center", alignItems

@@ -122,6 +122,9 @@ const ImgStatus = ({ route }) => {
                 // console.log(response)
                 // console.log("updated without image")
                 setLoader(false)
+                a.setAvatar(previewUrl);
+                sessionStorage.removeItem("avatar")
+                sessionStorage.setItem("avatar", previewUrl)
                 // setImageStorage(null)
                 // setOpenSnack(true)
             }).catch(err => { console.log(err, "inside server err"), setLoader(false) })
@@ -134,32 +137,12 @@ const ImgStatus = ({ route }) => {
 
 
 
-    // useEffect(() => {
-    //     console.log(data)
-    //     if (data != undefined) {
-
-    //         setDefaultText(data[0].Status)
-    //         console.log(data[0], "status")
-    //         const base64 = btoa(new Uint8Array(data[0].avatar.data.data).reduce(function (data, byte) {
-    //             return data + String.fromCharCode(byte);
-    //         }, ''));
-    //         const img = `data:image/png;base64,${base64}`
-    //         setPreviewUrl(img)
-    //     }
-
-    // }, [data])
-
     return (
 
         <View>
             {data ?
 
                 <View style={{}}>
-                    {/* <NavigationEvents
-                        onWillFocus={() => {
-                            getAsync();
-                        }}
-                    /> */}
                     {previewUrl ?
                         <View style={{ position: "relative" }}>
                             <Image

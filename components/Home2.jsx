@@ -4,7 +4,7 @@ import Cards from './Cards';
 import Axios from "axios";
 import { View ,FlatList,RefreshControl,Image,Dimensions,ScrollView} from 'react-native';
 import {decode as atob, encode as btoa} from 'base-64'
-import { useTheme ,ActivityIndicator,Text, Card} from 'react-native-paper';
+import { useTheme ,ActivityIndicator,Text, Card, Avatar} from 'react-native-paper';
 import NoteContext from './context/noteContext';
 // import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
 import SkeletonLoader from "expo-skeleton-loader";
@@ -59,8 +59,6 @@ const Home2 = () => {
       setIsRefreshing(true)
       // setSkip(skip+2);
       console.log("inside fetchMoreData2")
-      
-      
       console.log("skip",skip)
       console.log("limit",limit)
       await Axios.get(`https://nice-plum-panda-tam.cyclic.app/batchData/${0}/${1}`).then((response)=>{
@@ -135,11 +133,23 @@ const Home2 = () => {
      
   return (
     <View >
-      
+      <View style={{position:"absolute",minWidth:"100%",zIndex:150000,backgroundColor:theme.colors.background,minHeight:50,
+      shadowColor: '#000',
+      shadowOffset: { width: 2, height: 2 },
+      shadowOpacity: 0.5,
+      shadowRadius: 5,
+      elevation:10,
+    }}>
+        <View style={{minWidth:"95%",maxWidth:"95%",marginLeft:"2.5%",marignRight:"2.5%",flex:1,flexDirection:"row",justifyContent:"space-between",alignItems:"center"}}>
+        <Text variant='titleLarge' style={{color:theme.colors.primary,}}>{"<Hulk>"}</Text>
+        <Avatar.Image size={40} source={{uri:a.avatar}} />
+        </View>
+        </View>
     {data.length>0 ? <FlatList
             // style={{backgroundColor:theme.colors.background}}
             //  renderScrollComponent={props => <InfiniteScrollView {...props} />}
             data={data}
+            style={{marginTop:50}}
             extraData={data}
             keyExtractor={data._id}
             showsVerticalScrollIndicator={false}
@@ -156,7 +166,7 @@ const Home2 = () => {
             refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={fetchMoreData2} />}
             ></FlatList>:
             <View>
-              <Card style={{maxWidth:"97%",minWidth:"97%",marginLeft:"auto",marginRight:"auto",marginTop:10,minHeight:"40%",maxHeight:"50%",borderRadius:10}}>
+              <Card  style={{maxWidth:"97%",minWidth:"97%",marginLeft:"auto",marginRight:"auto",marginTop:60,minHeight:"40%",maxHeight:"50%",borderRadius:12}}>
                <SkeletonLoader highlightColor={theme.colors.skeletonhighlight} boneColor={theme.colors.skeletonbackground} duration={1000} style={{minHeight:"22%"}}  >
                  <SkeletonLoader.Container style={{flex:1,flexDirection:"row"}} >
              
